@@ -1,0 +1,101 @@
+doctype svg
+svg(version='1.1'
+    xmlns='http://www.w3.org/2000/svg' 
+    xmlns:xlink='http://www.w3.org/1999/xlink'
+    x='0px' y='0px'
+    viewBox='0 0 #{viewport.width} #{viewport.height}')
+
+ defs
+  circle#star(r='#{dimensions.board.star.radius}' fill='#000')
+  circle#black(r='#{dimensions.stone.radius}' fill='#000')
+  circle#white(r='#{dimensions.stone.radius}' fill='#fff')
+  circle#empty(r='#{dimensions.stone.radius}')
+  filter#blur
+   feGaussianBlur(stdDeviation="1")
+  //-
+   maybe use images later
+   image#black(xlink:href='black.png')
+
+ script(type='text/javascript' xlink:href='long.js')
+ script(type='text/javascript').
+  // <![CDATA[
+
+  var filenameChars = "#{filenameChars}";
+  var gameState = {
+   points: [ #{state} ]
+  };
+  function move(index){
+    gameState.points[index] = 1;
+    var rebase = new Long(gameState.points, 3).toBase(filenameChars.length);
+    var filename = rebase.toString(filenameChars);
+    window.location.pathname = '/'+filename+'.svg';
+  }
+  // ]]>
+
+ style(type='text/css').
+  @namespace xlink "http://www.w3.org/1999/xlink";
+
+  svg {
+   /* whenever this is implemented in browsers:
+   cursor:url(holding-stone.gif) grabbing pointer;
+   */
+  }
+
+  use[xlink|href="#koh"] {
+  }
+
+  use[xlink|href="#empty"] {
+  }
+
+  use[xlink|href="#empty"]:hover {
+   fill-opacity: 0.4;
+   filter: url(#blur);
+  }
+ 
+ g#board
+  rect(width='#{dimensions.board.width}'
+       height='#{dimensions.board.height}'
+       fill='#dec14e')
+
+  each i in [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
+   mixin boardLine(x1, y1, x2, y2)
+    line(
+      x1='#{dimensions.coordsToBu(x1,y1).x}'
+      y1='#{dimensions.coordsToBu(x1,y1).y}'
+      x2='#{dimensions.coordsToBu(x2,y2).x}'
+      y2='#{dimensions.coordsToBu(x2,y2).y}'
+      stroke='#000'
+      stroke-width='#{dimensions.board.line.thickness}')
+
+   //- vertical lines
+   +boardLine(i,0,i,18)
+
+   //- horizontal lines
+   +boardLine(0,i,18,i)
+
+  mixin boardUse(id, x, y)
+   use(xlink:href='#{ "#" + id }'
+       x='#{dimensions.coordsToBu(x,y).x}' 
+       y='#{dimensions.coordsToBu(x,y).y}')
+
+  each i in [0,1,2]
+   each j in [0,1,2]
+    //- star points
+    +boardUse('star', 4+5*i, 4+5*j)
+
+ g#pieces
+  each value, index in state
+   case value
+    when 0
+     use(xlink:href='#empty'
+	 onclick='move(#{index})'
+         x='#{dimensions.coordsToBu(index%19, Math.floor(index/19)).x}' 
+         y='#{dimensions.coordsToBu(index%19, Math.floor(index/19)).y}'
+         fill-opacity='0')
+    when 1
+     +boardUse('black', index%19, Math.floor(index/19))
+    when 2
+     +boardUse('white', index%19, Math.floor(index/19))
+
+  
+
