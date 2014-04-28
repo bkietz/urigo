@@ -4,6 +4,9 @@ svg(version='1.1'
     xmlns:xlink='http://www.w3.org/1999/xlink'
     x='0px' y='0px'
     viewBox='0 0 #{viewport.width} #{viewport.height}')
+ 
+ title.
+  URIgo
 
  defs
   circle#star(r='#{dimensions.board.star.radius}' fill='#000')
@@ -16,20 +19,19 @@ svg(version='1.1'
    maybe use images later
    image#black(xlink:href='black.png')
 
- script(type='text/javascript' xlink:href='long.js')
+ script(type='text/javascript' xlink:href='urigo.min.js')
  script(type='text/javascript').
   // <![CDATA[
 
   var filenameChars = "#{filenameChars}";
-  var gameState = {
-   points: [ #{state} ]
-  };
+  var gameState = { points: [ #{state} ] };
   function move(index){
     gameState.points[index] = 1;
     var rebase = new Long(gameState.points, 3).toBase(filenameChars.length);
     var filename = rebase.toString(filenameChars);
     window.location.pathname = '/'+filename+'.svg';
   }
+
   // ]]>
 
  style(type='text/css').

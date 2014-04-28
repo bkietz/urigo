@@ -1,6 +1,6 @@
-{Point, PointSet, Chain, GameState} = require 'go-state'
-{dimensions} = require 'go-board'
-{Long} = require 'long'
+{Point, PointSet, Chain, GameState} = require 'coffee/go-state'
+{dimensions} = require 'coffee/go-board'
+{Long} = require 'coffee/long'
 
 express = require 'express'
 app = express()
