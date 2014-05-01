@@ -2,9 +2,9 @@
   "name": "urigo",
   "version": "0.0.1",
   "description": "A minimal igo implementation",
-  "main": "app.coffee",
+  "main": "index.js",
   "scripts": {
-    "start": "coffee coffee/app.coffee"
+    "start": "coffee app.coffee"
   },
   "dependencies": {
     "express": "^4.0.0",

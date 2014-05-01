@@ -26,7 +26,7 @@ dimensions =
         radius: 1.2/2
 
 # hacky override so that stones do not overlap...
-dimensions.stone.radius = dimensions.board.line.spacing.height * 0.485
+dimensions.stone.radius = dimensions.board.line.spacing.height * 0.49
 
 dimensions.board.line.offset =
   height: (dimensions.board.height - 18*dimensions.board.line.spacing.height)/2

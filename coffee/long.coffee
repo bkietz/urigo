@@ -35,6 +35,33 @@ class Long
   toBase:(newBase)->
     new Long (@divideBy newBase while @digits.length).reverse(), newBase
 
-exports?.Long = Long
-window?.Long = Long
-@Long = Long
+filenameChars = [
+  "0123456789"                 # numeric
+  "abcdefghijklmnopqrstuvwxyz" # alpha
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZ" # ALPHA
+  "-_.!~*()"                   # mark 
+    # I should get ' as well, but chrome escapes it
+  ].join ''   # RFC 2396
+
+decodeGameState = (hash)->
+  long = Long.fromString hash, filenameChars
+  state = long.toBase(3).digits
+  if state.length < 19*19
+    state.unshift 0 while state.length isnt 19*19
+  else if state.length > 19*19
+    state.shift() while state.length isnt 19*19
+  state
+
+encodeGameState = (gameState)->
+  hash = new Long(gameState.points, 3).toBase filenameChars.length
+  # pad with 0 to at least 80 chars
+  if hash.digits.length < 80
+    hash.digits.unshift 0 while hash.digits.length isnt 80
+  hash.toString filenameChars
+
+exports?.decodeGameState = decodeGameState
+window?.decodeGameState = decodeGameState
+exports?.encodeGameState = encodeGameState
+window?.encodeGameState = encodeGameState
+
+

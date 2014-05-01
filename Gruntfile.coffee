@@ -10,7 +10,9 @@ module.exports = (grunt)->
         tasks: [ 'default' ]
 
     clean:
-      all: [ 'js/<%= pkg.name %>.js', 'min/<%= pkg.name %>.min.js' ]
+      all: [
+        'static/js/<%= pkg.name %>.min.js'
+        'js/<%= pkg.name %>.js' ]
 
     coffee:
       compile:
@@ -22,8 +24,9 @@ module.exports = (grunt)->
       options:
         banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
       build:
-        src: 'js/<%= pkg.name %>.js'
-        dest: 'min/<%= pkg.name %>.min.js'
+        files:
+          'static/js/<%= pkg.name %>.min.js': [
+            'js/<%= pkg.name %>.js' ]
 
   grunt.loadNpmTasks 'grunt-contrib-uglify'
   grunt.loadNpmTasks 'grunt-contrib-coffee'
