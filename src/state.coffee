@@ -1,4 +1,4 @@
-exports.Point = class Point
+class Point
   constructor:(x,y)->
     return new Point arguments... unless this instanceof Point
     @x=x; @y=y
@@ -15,7 +15,7 @@ exports.Point = class Point
 
 
 
-exports.PointSet = class PointSet
+class PointSet
   constructor:(arrayOfAddable=[])->
     @points = []
     @add a for a in arrayOfAddable
@@ -53,7 +53,7 @@ exports.PointSet = class PointSet
 
 
 
-exports.Chain = class Chain extends PointSet
+class Chain extends PointSet
   constructor:(@gameState, start, original=this)->
     return new Chain arguments... unless this instanceof Chain
     super start
@@ -73,7 +73,7 @@ exports.Chain = class Chain extends PointSet
 
 
 
-exports.GameState = class GameState
+class GameState
   constructor:(@state = 0 for i in [1..19*19])->
 
   validPoint:(point)->
@@ -116,4 +116,8 @@ exports.GameState = class GameState
         @stateAt chain, 0 unless chain.hasLiberty()
 
 
-
+module.exports =
+  Point:    Point
+  PointSet: PointSet
+  Chain:    Chain
+  GameState:GameState
