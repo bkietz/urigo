@@ -38,7 +38,7 @@ dimensions.coordsToBu = (x,y)->
  y: offset.height + y * spacing.height
 
 
-exports.dimensions = dimensions
+module.exports.dimensions = dimensions
 
 
 

@@ -24,10 +24,12 @@
   ],
   "author": "Ben Kietzman",
   "devDependencies": {
+    "coffee-script": "*",
     "grunt": "~0.4.4",
     "grunt-contrib-uglify": "~0.4.0",
     "grunt-contrib-coffee": "~0.10.1",
     "grunt-contrib-watch": "~0.6.1",
-    "grunt-contrib-clean": "~0.5.0"
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-browserify": "~2.0.8"
   }
 }

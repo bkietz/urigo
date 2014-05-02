@@ -19,16 +19,19 @@ svg(version='1.1'
    maybe use images later
    image#black(xlink:href='black.png')
 
- script(type='text/javascript' xlink:href='js/urigo.min.js')
+ script(type='text/javascript' xlink:href='js/urigo.js')
  script(type='text/javascript').
   // <![CDATA[
   //TODO require asynchronously, then setup move()
-  var gameState = { points: [ #{state} ] };
+  //TODO read gameState from static SVG
+  var gameState = { state: [ #{gameState.state} ] };
+  /*
   function move(index){
     gameState.points[index] = 1;
     window.location.pathname = '/'+encodeGameState(gameState)+'.svg';
   }
-  // ]]>
+  */
+  //]]>
 
  style(type='text/css').
   @namespace xlink "http://www.w3.org/1999/xlink";
@@ -91,7 +94,7 @@ svg(version='1.1'
      +boardUse('star', 4+5*i, 4+5*j)
 
   g#pieces
-   each value, index in state
+   each value, index in gameState.state
     case value
      when 0
       use(xlink:href='#empty'

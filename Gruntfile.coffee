@@ -5,20 +5,31 @@ module.exports = (grunt)->
     pkg: grunt.file.readJSON 'package.json'
 
     watch:
-      app:
-        files: 'coffee/*.coffee'
-        tasks: [ 'default' ]
+      coffee:
+        files: 'src/*.coffee'
+        tasks: [ 'coffee' ]
 
     clean:
       all: [
+        'bin/*'
+        'static/js/<%= pkg.name %>.js'
         'static/js/<%= pkg.name %>.min.js'
-        'js/<%= pkg.name %>.js' ]
+      ]
 
     coffee:
       compile:
-        files:
-          'js/<%= pkg.name %>.js': [
-            'coffee/long.coffee' ]
+        expand: true
+        flatten: true
+        cwd: 'src'
+        src: [ '*.coffee' ]
+        dest: 'bin'
+        ext: '.js'
+
+    browserify:
+      urigo:
+        files: [
+          'static/js/<%= pkg.name %>.js' : [ 'src/<%= pkg.name %>.js' ]
+        ]
 
     uglify:
       options:
@@ -26,12 +37,13 @@ module.exports = (grunt)->
       build:
         files:
           'static/js/<%= pkg.name %>.min.js': [
-            'js/<%= pkg.name %>.js' ]
+            'static/js/<%= pkg.name %>.js']
 
   grunt.loadNpmTasks 'grunt-contrib-uglify'
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-clean'
-  # grunt.loadNpmTasks 'grunt-contrib-watch'
+  grunt.loadNpmTasks 'grunt-browserify'
+  grunt.loadNpmTasks 'grunt-contrib-watch'
 
   # Default task(s).
-  grunt.registerTask 'default', ['coffee','uglify']
+  grunt.registerTask 'default', ['coffee','browserify','uglify']
