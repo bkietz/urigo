@@ -24,7 +24,7 @@ svg(version='1.1'
   // <![CDATA[
   //TODO require asynchronously, then setup move()
   //TODO read gameState from static SVG
-  var gameState = { state: [ #{gameState.state} ] };
+  var gameState = { state: [ #{gameState.state} ], whitesTurn: #{gameState.whitesTurn} };
   /*
   function move(index){
     gameState.points[index] = 1;
@@ -93,7 +93,7 @@ svg(version='1.1'
      //- star points
      +boardUse('star', 4+5*i, 4+5*j)
 
-  g#pieces
+  g#pieces(transform='rotate(#{180*gameState.whitesTurn},#{dimensions.board.width/2},#{dimensions.board.height/2})')
    each value, index in gameState.state
     case value
      when 0

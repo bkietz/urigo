@@ -97,10 +97,11 @@ decodeGameState = (hash)->
 
   ternary = Long.fromString(hash[1..], filenameChars).toBase 3
   pad0 ternary.digits, ternaryLength
-  new GameState ternary.digits[..19*19-1]
+  binary = new Long(ternary.digits.splice(19*19), 3).toBase 2
+  new GameState ternary.digits[..19*19-1], binary.digits[0]
 
 encodeGameState = (gameState)->
-  ternary = new Long gameState.state.concat([0,0,0,0,0,0]), 3
+  ternary = new Long gameState.state.concat([0+gameState.whitesTurn,0,0,0,0,0]), 3
   hash = ternary.toBase filenameChars.length
   pad0 hash.digits, filenameLength - 1
   '0' + hash.toString filenameChars
