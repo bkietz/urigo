@@ -9,28 +9,33 @@ svg(version='1.1'
   URIgo
 
  defs
-  circle#star(r='#{dimensions.board.star.radius}' fill='#000')
-  circle#black(r='#{dimensions.stone.radius}' fill='#000')
-  circle#white(r='#{dimensions.stone.radius}' fill='#fff')
-  circle#empty(r='#{dimensions.stone.radius}')
+  circle#star(r='#{dimensions.board.star.radius}' fill='#000')/
+  circle#black(r='#{dimensions.stone.radius}' fill='#000')/
+  circle#white(r='#{dimensions.stone.radius}' fill='#fff')/
+  circle#empty(r='#{dimensions.stone.radius}')/
   filter#blur
    feGaussianBlur(stdDeviation="1")
+  line#vertical(
+   y1='0'
+   y2='#{dimensions.board.height - dimensions.board.line.offset.height*2}'
+   stroke='#000'
+   stroke-width='#{dimensions.board.line.thickness}')/
+  line#horizontal(
+   x1='0'
+   x2='#{dimensions.board.width - dimensions.board.line.offset.width*2}'
+   stroke='#000'
+   stroke-width='#{dimensions.board.line.thickness}')/
   //-
    maybe use images later
    image#black(xlink:href='black.png')
 
  script(type='text/javascript' xlink:href='js/urigo.js')
+ //-
+   TODO require asynchronously, then setup move()
+   TODO read gameState from static SVG
  script(type='text/javascript').
   // <![CDATA[
-  //TODO require asynchronously, then setup move()
-  //TODO read gameState from static SVG
   var gameState = { state: [ #{gameState.state} ], whitesTurn: #{gameState.whitesTurn} };
-  /*
-  function move(index){
-    gameState.points[index] = 1;
-    window.location.pathname = '/'+encodeGameState(gameState)+'.svg';
-  }
-  */
   //]]>
 
  style(type='text/css').
@@ -41,13 +46,10 @@ svg(version='1.1'
    cursor:url(holding-stone.gif) grabbing pointer;
    */
   }
-
-  use[xlink|href="#koh"] {
+  use[xlink|href="#koh"]{}
+  use[xlink|href="#empty"]{
+   fill-opacity: 0;
   }
-
-  use[xlink|href="#empty"] {
-  }
-
   use[xlink|href="#empty"]:hover {
    fill-opacity: 0.4;
    filter: url(#blur);
@@ -55,53 +57,47 @@ svg(version='1.1'
  
  g#game
 
+  mixin boardUse(id, x, y)
+   use(xlink:href='#{ "#" + id }'
+   x='#{dimensions.coordsToBu(x,y).x}' 
+   y='#{dimensions.coordsToBu(x,y).y}')/
+
   g#board
    rect(width='#{dimensions.board.width}'
         height='#{dimensions.board.height}'
-        fill='#dec14e')
+        fill='#dec14e')/
 
    rect#ground(fill-opacity='0' stroke='#000'
         width='#{dimensions.board.width - dimensions.board.line.offset.width * 2}'
         height='#{dimensions.board.height - dimensions.board.line.offset.height * 2}'
         x='#{dimensions.coordsToBu(0,0).x}'
         y='#{dimensions.coordsToBu(0,0).y}'
-        stroke-width='#{dimensions.board.line.thickness}')
+        stroke-width='#{dimensions.board.line.thickness}')/
 
-   each i in [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
-    mixin boardLine(x1, y1, x2, y2)
-     line(
-       x1='#{dimensions.coordsToBu(x1,y1).x}'
-       y1='#{dimensions.coordsToBu(x1,y1).y}'
-       x2='#{dimensions.coordsToBu(x2,y2).x}'
-       y2='#{dimensions.coordsToBu(x2,y2).y}'
-       stroke='#000'
-       stroke-width='#{dimensions.board.line.thickness}')
+   each i in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]
 
     //- vertical lines
-    +boardLine(i,0,i,18)
+    +boardUse('vertical', i, 0)
 
     //- horizontal lines
-    +boardLine(0,i,18,i)
-
-   mixin boardUse(id, x, y)
-    use(xlink:href='#{ "#" + id }'
-        x='#{dimensions.coordsToBu(x,y).x}' 
-        y='#{dimensions.coordsToBu(x,y).y}')
+    +boardUse('horizontal', 0, i)
 
    each i in [0,1,2]
     each j in [0,1,2]
      //- star points
      +boardUse('star', 4+5*i, 4+5*j)
 
+  g(urigo-whites-turn='#{gameState.whitesTurn}')
   g#pieces(transform='rotate(#{180*gameState.whitesTurn},#{dimensions.board.width/2},#{dimensions.board.height/2})')
    each value, index in gameState.state
     case value
      when 0
-      use(xlink:href='#empty'
-          onclick='move(#{index})'
-          x='#{dimensions.coordsToBu(index%19, Math.floor(index/19)).x}' 
-          y='#{dimensions.coordsToBu(index%19, Math.floor(index/19)).y}'
-          fill-opacity='0')
+      +boardUse('empty', index%19, Math.floor(index/19))
+      //- 
+       use(xlink:href='#empty'
+           onclick='move(#{index})'
+           x='#{dimensions.coordsToBu(index%19, Math.floor(index/19)).x}' 
+           y='#{dimensions.coordsToBu(index%19, Math.floor(index/19)).y}')/
      when 1
       +boardUse('black', index%19, Math.floor(index/19))
      when 2
