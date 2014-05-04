@@ -12,8 +12,7 @@ module.exports = (grunt)->
     clean:
       all: [
         'bin/*'
-        'static/js/<%= pkg.name %>.js'
-        'static/js/<%= pkg.name %>.min.js'
+        'browser/*'
       ]
 
     coffee:
@@ -28,7 +27,7 @@ module.exports = (grunt)->
     browserify:
       urigo:
         files: [
-          'static/js/<%= pkg.name %>.js' : [ 'bin/<%= pkg.name %>.js' ]
+          'browser/js/<%= pkg.name %>.js' : [ 'bin/<%= pkg.name %>.js' ]
         ]
 
     uglify:
@@ -36,8 +35,9 @@ module.exports = (grunt)->
         banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
       build:
         files:
-          'static/js/<%= pkg.name %>.min.js': [
-            'static/js/<%= pkg.name %>.js']
+          'browser/js/<%= pkg.name %>.min.js': [
+            'browser/js/<%= pkg.name %>.js'
+          ]
 
   grunt.loadNpmTasks 'grunt-contrib-uglify'
   grunt.loadNpmTasks 'grunt-contrib-coffee'

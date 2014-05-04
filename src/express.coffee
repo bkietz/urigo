@@ -7,7 +7,8 @@
 
 module.exports = -> (req, res, next)->
   # intercept requests for svg:
-  getHash = /\/([^\/]*)\.svg$/g
+  getHash = /^\/([^\/]*)\.svg$/g
+  getScript = /^\/(js\/[^\/]*(?:\.min)?\.js)$/g
   {path} = req
   if path.length > 70 and getHash.test path
     hash = path.replace getHash,'$1'
@@ -27,6 +28,10 @@ module.exports = -> (req, res, next)->
       res.header
         'Content-Type': 'image/svg+xml'
       res.send svg
+
+  else if getScript.test path
+    res.sendfile "browser"+path
+
 
   else next()
 

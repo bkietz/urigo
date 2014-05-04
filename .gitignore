@@ -27,4 +27,4 @@ node_modules
 
 # build directories
 bin
-static
+browser
