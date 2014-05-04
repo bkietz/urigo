@@ -74,7 +74,7 @@ class Chain extends PointSet
 
 
 class GameState
-  constructor:(@state = 0 for i in [1..19*19])->
+  constructor:(@state = 0 for i in [1..19*19], @whitesTurn=false)->
 
   validPoint:(point)->
     point.x>=0 and point.x<19 and point.y>=0 and point.y<19
@@ -108,6 +108,7 @@ class GameState
 
   moveAt:(point, newState)->
     return if @stateAt point
+    @whitesTurn = not @whitesTurn
     @stateAt point, newState
     point.neighbors().map (n)=>
       state = @stateAt n

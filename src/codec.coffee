@@ -112,4 +112,3 @@ encodeGameState = (gameState)->
 module.exports =
   decodeGameState: decodeGameState
   encodeGameState: encodeGameState
-  pad0: pad0

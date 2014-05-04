@@ -7,15 +7,24 @@
 gameState = new GameState()
 
 move = (index)->
-  gameState.state[index] = 1
-  gameState.whitesTurn = !gameState.whitesTurn
+  point = gameState.indexToPoint index
+  if gameState.whitesTurn
+    gameState.moveAt point,2
+  else
+    gameState.moveAt point,1
   window.location.pathname = "#{encodeGameState gameState}.svg"
 
 
 document.addEventListener 'DOMContentLoaded', ()->
 
+  # turn is stored in the CSS:
+  css = document.styleSheets[0].cssRules
+  for r in css when r.selectorText is 'use[xlink|href="#empty"]:hover'
+    gameState.whitesTurn = r.style.fill is '#ffffff'
+
   pieces = document.getElementById 'pieces'
 
+  # stone positions are stored in the SVG:
   for p,i in pieces.childNodes
     href = p.getAttributeNS 'http://www.w3.org/1999/xlink','href'
     gameState.state[i] = switch href
@@ -23,6 +32,7 @@ document.addEventListener 'DOMContentLoaded', ()->
       when '#black' then 1
       when '#white' then 2
 
+  # click listener to move at a location:
   pieces.addEventListener 'click', (e)->
     return unless e.target instanceof SVGElementInstance
     use = e.target.correspondingUseElement
