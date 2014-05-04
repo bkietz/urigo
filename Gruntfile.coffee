@@ -28,7 +28,7 @@ module.exports = (grunt)->
     browserify:
       urigo:
         files: [
-          'static/js/<%= pkg.name %>.js' : [ 'src/<%= pkg.name %>.js' ]
+          'static/js/<%= pkg.name %>.js' : [ 'bin/<%= pkg.name %>.js' ]
         ]
 
     uglify:
