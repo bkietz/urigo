@@ -12,17 +12,15 @@ move = (index)->
     gameState.moveAt point,2
   else
     gameState.moveAt point,1
-  window.location.pathname = "#{encodeGameState gameState}.svg"
+  window.location.pathname = "/#{encodeGameState gameState}.svg"
 
 
 document.addEventListener 'DOMContentLoaded', ()->
 
-  # turn is stored in the CSS:
-  css = document.styleSheets[0].cssRules
-  for r in css when r.selectorText is 'use[xlink|href="#empty"]:hover'
-    gameState.whitesTurn = r.style.fill is '#ffffff'
-
   pieces = document.getElementById 'pieces'
+
+  # turn is stored in an attribute
+  gameState.whitesTurn = '1' is pieces.getAttribute 'urigo-whites-turn'
 
   # stone positions are stored in the SVG:
   for p,i in pieces.childNodes
@@ -38,6 +36,12 @@ document.addEventListener 'DOMContentLoaded', ()->
     use = e.target.correspondingUseElement
     index = Array::indexOf.call use.parentNode.childNodes, use
     move index
+    return
+
+  # touch listener to examine interaction with click:
+  pieces.addEventListener 'touch', (e)->
+    e.preventDefault()
+    e.stopPropagation()
     return
 
 

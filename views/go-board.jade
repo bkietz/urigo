@@ -14,7 +14,7 @@ svg(version='1.1'
   circle#white(r='#{dimensions.stone.radius}' fill='#fff')/
   circle#empty(r='#{dimensions.stone.radius}')/
   filter#blur
-   feGaussianBlur(stdDeviation="1")
+   feGaussianBlur(stdDeviation="0.3")
   line#vertical(
    y1='0'
    y2='#{dimensions.board.height - dimensions.board.line.offset.height*2}'
@@ -81,16 +81,14 @@ svg(version='1.1'
      //- star points
      +boardUse('star', 4+5*i, 4+5*j)
 
-  g#pieces(transform='rotate(#{180*gameState.whitesTurn},#{dimensions.board.width/2},#{dimensions.board.height/2})')
+  g#pieces(
+   transform='rotate(#{180*gameState.whitesTurn},#{dimensions.board.width/2},#{dimensions.board.height/2})'
+   urigo-whites-turn='#{gameState.whitesTurn}')
+
    each value, index in gameState.state
     case value
      when 0
       +boardUse('empty', index%19, Math.floor(index/19))
-      //- 
-       use(xlink:href='#empty'
-           onclick='move(#{index})'
-           x='#{dimensions.coordsToBu(index%19, Math.floor(index/19)).x}' 
-           y='#{dimensions.coordsToBu(index%19, Math.floor(index/19)).y}')/
      when 1
       +boardUse('black', index%19, Math.floor(index/19))
      when 2

@@ -56,7 +56,7 @@ class PointSet
 class Chain extends PointSet
   constructor:(@gameState, start, original=this)->
     return new Chain arguments... unless this instanceof Chain
-    super start
+    super [start]
     start.neighbors().map (neighbor)->
       return unless gameState.stateAt(start) is gameState.stateAt(neighbor)
       return if original.contains neighbor
@@ -67,7 +67,8 @@ class Chain extends PointSet
     hasLiberty = false
     @map (groupie)=>
       groupie.neighbors().map (n)=>
-         hasLiberty ||= not @gameState.stateAt n
+        if @gameState.validPoint n
+          hasLiberty ||= not @gameState.stateAt n
     hasLiberty
 
 
