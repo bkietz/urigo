@@ -17,7 +17,7 @@
       getHash = /^\/([^\/]*)\.svg$/g;
       getScript = /^\/(js\/[^\/]*(?:\.min)?\.js)$/g;
       path = req.path;
-      if (path.length > 70 && getHash.test(path)) {
+      if (path.length > 97 && getHash.test(path)) {
         hash = path.replace(getHash, '$1');
         gameState = decodeGameState(hash);
         locals = {
