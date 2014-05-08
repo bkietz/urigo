@@ -39,11 +39,19 @@ module.exports = (grunt)->
             'browser/js/<%= pkg.name %>.js'
           ]
 
+    karma:
+      options:
+        keepalive: false
+      unit:
+        runnerPort: 9020
+        configFile: 'test/karma.coffee'
+
   grunt.loadNpmTasks 'grunt-contrib-uglify'
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-clean'
   grunt.loadNpmTasks 'grunt-browserify'
   grunt.loadNpmTasks 'grunt-contrib-watch'
+  grunt.loadNpmTasks 'grunt-karma'
 
   # Default task(s).
   grunt.registerTask 'default', ['coffee','browserify','uglify']

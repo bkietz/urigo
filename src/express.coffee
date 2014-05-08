@@ -2,6 +2,7 @@
 {dimensions} = require '../bin/board'
 {decodeGameState} = require '../bin/codec'
 {renderFile} = require 'jade'
+{resolve} = require 'path'
 
 
 
@@ -21,7 +22,7 @@ module.exports = -> (req, res, next)->
         width: dimensions.board.width
         height: dimensions.board.height
 
-    renderFile 'views/go-board.jade', locals, (err, svg)->
+    renderFile resolve("#{__dirname}/../views/go-board.jade"), locals, (err, svg)->
       if err?
         console.log 'error rendering go-board.jade: ', err
 
@@ -30,7 +31,7 @@ module.exports = -> (req, res, next)->
       res.send svg
 
   else if getScript.test path
-    res.sendfile "browser"+path
+    res.sendfile resolve "#{__dirname}/../browser#{path}"
 
 
   else next()
