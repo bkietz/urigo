@@ -136,17 +136,19 @@
   Go Codec
   ========
   
-  As of version 0 of this codec, I use 96 filename
+  As of version 0 of this codec, I use 97 filename
   characters to encode the state of a game.
   
   According to RFC 2396:
    */
 
-  filenameChars = "0123456789" + "abcdefghijklmnopqrstuvwxyz" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "-_.!~*()";
+  filenameChars = "0123456789" + "abcdefghijklmnopqrstuvwxyz" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "-_.!~*";
 
 
   /*
-  (I should get ' as well, but browsers escape it)
+  (I should get `'` as well, but browsers escape it)
+  (I should get `()` as well, but 
+   [twitter is too clever](https://github.com/twitter/twitter-text-js/blob/master/twitter-text.js#L265))
   
   The first character is a version number. (TODO)
   The rest should be shifted to base 3.
