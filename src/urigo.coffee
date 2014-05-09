@@ -39,11 +39,7 @@ document.addEventListener 'DOMContentLoaded', ()->
     return
 
   # touch listener to examine interaction with click:
-  pieces.addEventListener 'touch', (e)->
-    e.preventDefault()
-    e.stopPropagation()
-    return
-
+  pieces.addEventListener 'touchstart', (e)->
 
 
 # expose these for conveneint browser hacking
