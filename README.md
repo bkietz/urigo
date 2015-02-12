@@ -2,3 +2,5 @@ urigo
 =====
 
 A maximally minimalist igo-as-a-service implementation.
+
+Demo at [skizizo.com](http://skizizo.com/000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000.svg)
